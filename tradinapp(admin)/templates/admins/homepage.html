@@ -1,0 +1,205 @@
+{% extends "admins/home_index.html" %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>NexTrade | Complaints</title>
+  <!-- Favicon -->
+  <link href="/static/assets/images/nexicon.png" sizes="32x32" rel="icon">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- DataTables CSS -->
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+      html {     overflow-y: scroll;
+               overflow-x: hidden;
+    }
+    body {
+      /*background: linear-gradient(to right, #007bff, #00c6ff);*/
+{#      background-image: url(/static/assets/images/bgcomplaint.png);#}
+        background-size: 700px 950px;
+        background-repeat: no-repeat;
+        background-position: right;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 600;
+        /* Floating animation for background */
+      animation: floatingBackground 20s ease-in-out infinite;
+    }
+    /* Floating animation keyframes */
+    @keyframes floatingBackground {
+      0% {
+        background-position: right center;
+      }
+      25% {
+        background-position: right calc(50% + 15px);
+      }
+      50% {
+        background-position: right calc(50% - 10px);
+      }
+      75% {
+        background-position: right calc(50% + 5px);
+      }
+      100% {
+        background-position: right center;
+      }
+    }
+    body.modal-open {
+    overflow: visible !important;
+    padding-right: 0 !important;
+}
+
+.modal {
+    padding-right: 0 !important;
+}
+
+   .modal-content {
+    border: none;
+    background: linear-gradient(to right, #007bff, #00c6ff);
+    color: white;
+}
+
+    /* Card + table styling */
+      .table-responsive{
+        border-radius: 0.75rem;
+        padding: 1rem;
+        background: transparent;
+      }
+    .table-card {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      background: transparent;
+    }
+    .table-card .card-header {
+      /*background: #0d6efd;*/
+      color: white;
+      font-weight: 600;
+      background: transparent;
+    }
+    .table thead th:first-child {
+      border-top-left-radius: 0.75rem;
+    }
+    .table thead th:last-child {
+      border-top-right-radius: 0.75rem;
+    }
+       /* Add subtle animation to table rows */
+    #complaintTable tbody tr {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #complaintTable tbody tr:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Animate status badges */
+    .badge {
+      transition: all 0.3s ease;
+    }
+
+    .badge:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="about" class="about-us">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 align-self-center ">
+          <div class="section-heading" id="statistics">
+              <h3>Statistics</h3>
+           <section class="admin-stats section">
+            <div class="stats-grid">
+                <!-- Total Users -->
+              <div class="stat-card shadow">
+                <h3>Total Users</h3>
+                    <p class="stat-value">{{ data }}</p>
+              </div>
+                <!-- Active Trades Today -->
+                <div class="stat-card shadow">
+                    <h3>Active Trades Today</h3>
+                    <p class="stat-value">{{ active_trade }}</p>
+                </div>
+
+                <!-- Pending Reports -->
+                <div class="stat-card warning shadow">
+                    <h3>Pending Reports</h3>
+                    <p class="stat-value">{{ reports }}</p>
+                </div>
+
+                <!-- Server Status -->
+                <div class="stat-card success shadow">
+                    <h3>Server Status</h3>
+                    <p class="stat-value">Online</p>
+                </div>
+            </div>
+           </section>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="right-image" >
+            <img src="/static/assets/images/about-right-dec1.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+  // Extend DataTables with custom date filtering
+  $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+    const min = document.getElementById('fromDate').value;
+    const max = document.getElementById('toDate').value;
+    const dateStr = data[1]; // column index 1 = Date
+    const date = new Date(dateStr);
+
+    const minDate = min ? new Date(min) : null;
+    const maxDate = max ? new Date(max) : null;
+
+    return (!minDate || date >= minDate) && (!maxDate || date <= maxDate);
+  });
+
+  // Initialize DataTable + filters
+  $(document).ready(function () {
+    const table = $('#complaintTable').DataTable({ pageLength: 5 });
+
+    $('#fromDate, #toDate').on('change', function () {
+      table.draw();
+    });
+
+    // Load reply form dynamically in modal
+    document.querySelectorAll(".reply-btn").forEach(button => {
+      button.addEventListener("click", function () {
+        let complaintId = this.dataset.id;
+        $("#replyModalBody").html(
+          `<div class="text-center">
+            <div class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>`
+        );
+        $("#replyModalBody").load("/myapp/send_reply/" + complaintId);
+        const replyModal = new bootstrap.Modal(document.getElementById('replyModal'));
+        replyModal.show();
+      });
+    });
+  });
+</script>
+</body>
+</html>
+
+{% endblock %}

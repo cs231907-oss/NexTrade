@@ -1,0 +1,9 @@
+<form action="/myapp/add_notifi_post/" method="post" class="p-3">
+    {% csrf_token %}
+    <div class="form-group mb-3"> <label for="Title">Notification</label>
+        <input type="text" class="form-control" id="Title" placeholder="Enter notification" required name="anotifi">
+    </div>
+
+    <div class="d-grid gap-2"> <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+</form>

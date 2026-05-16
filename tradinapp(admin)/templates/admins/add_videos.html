@@ -1,0 +1,13 @@
+ <form method="post" action="/myapp/add_video_post/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <label for="Title" style="color: white;">Title</label>
+                        <input type="text" class="form-control" id="Title" placeholder="Enter Title" required name="vtitle"><br>
+                    </div>
+                    <label for="video" class="col-sm-4 " style="color: white;">Upload Video</label><br>
+
+                        <div class="col-sm-8">
+                        <input type="file" class="form-control" id="video" accept="video/MPV/*" required name="vid"><br>
+                        </div>
+                <div class="d-grid gap-2"><button type="submit" class="btn btn-primary ">Add</button></div>
+                </form>

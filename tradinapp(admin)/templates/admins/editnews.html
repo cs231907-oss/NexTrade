@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News editing section</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!--favivon-->
+    <link href="/static/assets/images/nexicon.png" sizes="32x32" rel="icon">
+    <style>
+        body {
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            /* Animation properties */
+            animation: floatIn 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+         /* Floating animation */
+        @keyframes floatIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .back-btn {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            background: linear-gradient(to right, #00a4ff, #00c6ff);
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+            z-index: 10;
+            padding: 8px 16px;
+            animation: slideIn 0.8s ease-out 0.2s forwards;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+         /* Back button animation */
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            border: none;
+            font-weight: bold;
+            width: 100%;
+            transition: transform 0.2s ease;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        button[type="submit"]:hover {
+            transform: scale(1.02);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            /* Animation for form elements */
+            animation: fadeIn 0.8s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+         /* Form elements animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Stagger animations for form elements */
+        .form-group:nth-child(1) {
+            animation-delay: 0.4s;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <a href="/myapp/view_news/" class="btn btn-primary shadow back-btn">Back</a>
+    <div class="card bg-light">
+        <h2 class="text-center">Edit News</h2>
+        <form action="/myapp/editnews_post/" method="post">
+            {% csrf_token %}
+            <input type="hidden" value="{{ data.id }}" name="id">
+
+            <div class="form-group">
+                <label for="Title">Title</label>
+                <input type="text" class="form-control" id="Title" value="{{ data.title }}" placeholder="Enter Title" required name="entitle">
+            </div>
+
+            <div class="form-group">
+                <label for="Description">Description</label>
+                <textarea class="form-control" id="Description" placeholder="Description" required name="edescr">{{ data.description }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

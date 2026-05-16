@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <!--favivon-->
+    <link href="/static/assets/images/nexicon.png" sizes="32x32" rel="icon">
+    <title>NexTrade</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/assets/css/templatemo-chain-app-dev.css">
+    <link rel="stylesheet" href="/static/assets/css/animated.css">
+    <link rel="stylesheet" href="/static/assets/css/owl.css">
+
+    <style>
+      /* Smooth scroll and transition effects */
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px; /* Account for fixed header */
+      }
+
+      .section {
+        transition: opacity 0.3s ease;
+      }
+
+      .highlight {
+        animation: pulseHighlight 2s ease-in-out;
+        position: relative;
+      }
+
+      .highlight::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -10px;
+        right: -10px;
+        bottom: 0;
+        background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(75, 142, 241, 0.1) 50%,
+          transparent 100%);
+        border-left: 5px solid #4b8ef1;
+        z-index: 1;
+        animation: slideHighlight 1.5s ease-in-out;
+      }
+
+      @keyframes pulseHighlight {
+        0%, 100% {
+          background-color: transparent;
+        }
+        50% {
+          background-color: rgba(75, 142, 241, 0.1);
+        }
+      }
+
+      @keyframes slideHighlight {
+        0% {
+          transform: translateX(0);
+          opacity: 0;
+        }
+        50% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      /* Progress indicator */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, #4b8ef1, #fd000f);
+        z-index: 1000;
+        transition: width 0.3s ease;
+      }
+
+      /* Active nav link styling */
+      .nav-links a.active {
+        background: #2a2a2a !important;
+        transform: scale(1.1);
+        box-shadow: 0 5px 15px rgba(75, 142, 241, 0.4);
+      }
+
+      .nav-links a {
+        transition: all 0.3s ease;
+      }
+
+      /* Original styles */
+      .lg{
+        height:75px;
+        width:110px;
+        left:0;
+        display: flex;
+        align-items: center;
+      }
+
+      .dropdown-menu{
+        border-radius: 15px;
+        color: white;
+      }
+
+      .feed{
+        color: black!important;
+        top:0;
+        left:0;
+        display: block;
+        position: relative;
+        background: transparent;
+      }
+
+      .feed:hover{
+        background-color: #00a4ff;
+        color: #00064b !important;
+        border-radius: 25px;
+      }
+
+      /* Make the whole nav line up vertically */
+      .main-nav .nav { display: flex; align-items: center; }
+
+      /* Ensure every li behaves the same */
+      .main-nav .nav > li { display: inline-flex; align-items: center; }
+
+      .main-nav .nav > li > a,
+      .main-nav .nav > li > a.dropdown-toggle {
+        padding: 0 !important;
+        line-height: 1.2;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .main-nav .dropdown-toggle::after {
+        margin-left: .35rem;
+        vertical-align: middle;
+        transform: translateY(-1px);
+      }
+
+      .admin-stats {
+        padding: 40px;
+        background: #f8f9fc;
+        background: transparent;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+      }
+
+      .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: transform 0.2s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .stat-card h3 {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 10px;
+      }
+
+      .stat-value {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .stat-card.success .stat-value {
+        color: #28a745;
+      }
+
+      .stat-card.warning .stat-value {
+        color: #dc3545;
+      }
+    </style>
+  </head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky wow slideInDown"  data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="/myapp/home_index/" class="logo">
+              <img src="/static/assets/images/nexlogo1.png" alt="NexTrade" class="lg float-start">
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+                <li class="scroll-to-section"><a href="/myapp/home_index/" class="active">Home</a></li>
+                <li class="scroll-to-section"><a href="/myapp/view_news/" >News</a></li>
+                <li class="scroll-to-section"><a href="/myapp/view_video/" >Video</a></li>
+                <li class="scroll-to-section"><a href="/myapp/view_notify/" >Notification</a></li>
+                <li class="scroll-to-section" hidden="hidden"><a href="#support" >Support&Help</a></li>
+                <li>
+                    <div class="gradient-button">
+                        <a id="modal_trigger" href="/myapp/changepswd_get/"><i class="fa fa-lock" style="-webkit-text-stroke:0.5px black; color: white;"></i>  Change password</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="gradient-button ps-3">
+                        <a id="modal_trigger" href="/myapp/logout/"><i class="fa fa-sign-out-alt" style="-webkit-text-stroke:0.5px black; color: white;"></i>  LogOut</a>
+                    </div>
+                </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress"></div>
+
+  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6 align-self-center">
+              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h1><b>NexTrade</b></h1>
+                      <p style="color: white;"><i>A Next Generation Trading Platform For Learning Trading.</i></p>
+                  </div>
+                  <div class="col-lg-12 row">
+                    <div class="white-button first-button scroll-to-section">
+                        <div class="white-button scroll-to-section" style="margin-top: 10px">
+                             <a href="#manage" class="shadow">Manage<i class="fas fa-cog"></i></a>
+                         </div>
+                    </div>
+                          <div class="white-button scroll-to-section" style="margin-top: 10px; margin-left: 20px">
+                              <a href="#statistics" class="shadow">Statistics<i class="fas fa-chart-bar"></i></a>
+                          </div>
+                      </div>
+                      <div class="white-button scroll-to-section" style="margin-top: 10px; margin-left: 20px">
+                          <a href="#support" class="shadow">Support&Help<i class="fas fa-headset"></i></a>
+                      </div>
+                    <div class="white-button scroll-to-section" style="margin-top: 10px; margin-left: 20px">
+                          <a href="#feedback" class="shadow">Feedback<i class="fas fa-comment"></i></a>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                <img src="/static/assets/images/slider-dec2.png" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="services" class="services">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="service-item first-service section" id="manage">
+            <div class="icon" ></div>
+            <h4 >Manage Users</h4>
+            <p>Add, remove, or edit user accounts and monitor their activity.</p>
+            <div class="text-button">
+              <a href="/myapp/view_users/">Go to User Management<i class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="service-item second-service" id="support">
+            <div class="icon"></div>
+            <h4>Manage Complaints</h4>
+            <p>View and manage all complaints, reply to pending complaints.</p>
+            <div class="text-button">
+              <a href="/myapp/view_complaint/">View Complaint<i class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="service-item third-service" id="feedback">
+            <div class="icon"></div>
+            <h4>Feedback</h4>
+            <p>Check Feedback of user</p>
+            <div class="text-button">
+              <a href="/myapp/view_feed/">Open Feedback <i class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+{#        <div class="col-lg-3">#}
+{#          <div class="service-item fourth-service section" id="support">#}
+{#            <div class="icon"></div>#}
+{#            <h4> Support& Help </h4>#}
+{#            <p>Send announcements, resolve support tickets, and stay informed of system alerts.</p>#}
+{#            <div class="text-button">#}
+{#                <ul>#}
+{#                    <li class="scroll-to-section dropdown">#}
+{#                        <a href="#" class="dropdown-toggle scroll-to-section" id="complaintsDropdown"#}
+{#                           data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                            Support&Help#}
+{#                        </a>#}
+{#                        <ul class="dropdown-menu scroll-to-section " aria-labelledby="complaintsDropdown">#}
+{#                            <li><a class="dropdown-item feed text-muted scroll-to-section" href="/myapp/view_complaint/" style="color:red;">Complaints</a></li>#}
+{#                            <li><a class="dropdown-item feed text-muted scroll-to-section " href="/myapp/view_feed/" >Feedback</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </div>#}
+{#          </div>#}
+{#        </div>#}
+      </div>
+    </div>
+  </div>
+   <div >
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-12">
+
+            {% block body %}
+            {% endblock %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="newsletter">
+        <div class="col-lg-12">
+          <div class="copyright-text">
+            <p>Copyright © 2025 NEXTRADE Dev Company. All Rights Reserved.
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+{#  <script src="/static/vendor/jquery/jquery.min.js"></script>#}
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/assets/js/owl-carousel.js"></script>
+  <script src="/static/assets/js/animation.js"></script>
+  <script src="/static/assets/js/imagesloaded.js"></script>
+  <script src="/static/assets/js/popup.js"></script>
+  <script src="/static/assets/js/custom.js"></script>
+
+  <!-- Smooth Scroll Script -->
+  <script>
+    class SmoothScroll {
+      constructor() {
+        this.init();
+      }
+
+      init() {
+        // Add click listeners to all anchor links with hash
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = anchor.getAttribute('href').substring(1);
+            this.scrollToSection(targetId);
+          });
+        });
+
+        // Highlight active section on scroll
+        window.addEventListener('scroll', () => {
+          this.highlightActiveSection();
+          this.updateProgressBar();
+        });
+
+        // Initial highlight
+        this.highlightActiveSection();
+      }
+
+      scrollToSection(sectionId) {
+        const targetSection = document.getElementById(sectionId);
+        if (!targetSection) return;
+
+        // Remove any existing highlights
+        this.removeHighlights();
+
+        // Scroll to section
+        targetSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+        // Add highlight after scroll completes
+        setTimeout(() => {
+          this.highlightSection(sectionId);
+        }, 800);
+      }
+
+      highlightSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.classList.add('highlight');
+
+          // Remove highlight after animation
+          setTimeout(() => {
+            section.classList.remove('highlight');
+          }, 2000);
+        }
+      }
+
+      removeHighlights() {
+        document.querySelectorAll('.highlight').forEach(el => {
+          el.classList.remove('highlight');
+        });
+      }
+
+      highlightActiveSection() {
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.main-nav .nav a');
+
+        let currentSection = '';
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          const sectionHeight = section.clientHeight;
+
+          if (window.scrollY >= sectionTop &&
+              window.scrollY < sectionTop + sectionHeight) {
+            currentSection = section.getAttribute('id');
+          }
+        });
+
+        // Update active nav link
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${currentSection}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      updateProgressBar() {
+        const winHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        const scrollTop = window.pageYOffset;
+        const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
+
+        document.querySelector('.scroll-progress').style.width = `${scrollPercent}%`;
+      }
+    }
+
+    // Initialize smooth scroll
+    new SmoothScroll();
+  </script>
+</body>
+</html>

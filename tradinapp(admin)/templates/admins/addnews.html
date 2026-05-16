@@ -1,0 +1,12 @@
+ <form action="/myapp/addnews_post/" method="post">
+                    {% csrf_token%}
+                    <div class="form-group mb-3">
+                        <label for="Title">Title</label>
+                        <input type="text" class="form-control" id="Title" placeholder="Enter Title" required name="ntitle"><br>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Description">Description</label>
+                        <textarea type="text" class="form-control" id="Description" placeholder="Description" required name="description"> </textarea><br>
+                    </div>
+                    <div class="d-grid gap-2"><button type="submit" class="btn btn-primary ">Add</button></div>
+ </form>
