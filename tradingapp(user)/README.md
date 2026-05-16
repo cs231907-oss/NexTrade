@@ -1,16 +1,16 @@
-# tradingapp
+# Trading App With Base Coin (NexTrade)
 
-A new Flutter project.
+A simulated trading application built using Django that allows users to practice trading using virtual currency.
 
-## Getting Started
+## Features:
+- Buy/Sell simulation
+- Portfolio tracking
+- Trading related educational content
+- Admin dashboard (web)
+- Yahoo finance API for real market data
 
-This project is a starting point for a Flutter application.
+## Tech Stack:
+Python, Django, Flutter
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Role:
+Project Leader(July - December 2025)
